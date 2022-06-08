@@ -1,0 +1,10 @@
+.oculto{
+    display: none;
+}
+.cartas{
+    width:18rem;
+    margin-bottom: 2rem;
+}
+.alert{
+    color: red;
+}
