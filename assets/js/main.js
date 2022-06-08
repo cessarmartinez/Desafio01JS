@@ -3,13 +3,14 @@ const boton = document.getElementById("boton");
 const seleccionar = document.querySelector('select');
 const radio = document.querySelector('zonaRadio');
 let cantEntradas = document.getElementById("cantEntradas"); 
+const entradas = document.getElementById("entradas");
 
 
 let alta = document.getElementById('alta');
 let baja = document.getElementById('baja');
 let popular = document.getElementById('popular');
-
-let total=0;
+let alertaZona = document.getElementById('alertaZona');
+let alertaEntradas = document.getElementById('alertaEntradas');
 
 seleccionar.addEventListener('change', elegirZona);
 
@@ -42,8 +43,10 @@ function elegirZona() {
 boton.addEventListener("click", calcularEntradas)
 
 function calcularEntradas(){
+    alertaZona.classList.add("oculto");
+    alertaEntradas.classList.add("oculto");
     if( cantEntradas.value <= 0 ){
-        alert("Ingrese un valor mayor a 0")
+        alertaEntradas.classList.remove("oculto");
     }
     else{
         const zona = document.querySelector('input[name="zonaRadio"]:checked') || 'bajaRadio' || 'popularRadio';
@@ -51,8 +54,8 @@ function calcularEntradas(){
             for (i=1;i <=cantEntradas.value ;i++ ){
                 const div = document.createElement("div");
                 div.textContent = "Usted a comprado una entrada en la Platea Alta con valor de Valor: 4000$";
-                div.classList.add("card");
-                div.classList.add("cartas"); 
+                div.classList.add("cartas");
+                div.classList.add("card");  
                 document.body.appendChild(div);
             }
             const div = document.createElement("div");
@@ -86,7 +89,7 @@ function calcularEntradas(){
             document.body.appendChild(div);
         }
         else{
-            alert("Seleccion una zona")
+            alertaZona.classList.remove("oculto");
         }
     }
 }
