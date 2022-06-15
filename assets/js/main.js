@@ -4,6 +4,7 @@ const seleccionar = document.querySelector('select');
 const radio = document.querySelector('zonaRadio');
 let cantEntradas = document.getElementById("cantEntradas"); 
 const entradas = document.getElementById("entradas");
+const zonas = ["Platea ALta", "Platea Baja", "Popular"];
 
 
 let alta = document.getElementById('alta');
@@ -40,7 +41,7 @@ function elegirZona() {
   }
 }
 
-boton.addEventListener("click", calcularEntradas)
+boton.addEventListener("click", calcularEntradas);
 
 function calcularEntradas(){
     alertaZona.classList.add("oculto");
@@ -53,7 +54,7 @@ function calcularEntradas(){
         if(zona.value == 'altaRadio') {
             for (i=1;i <=cantEntradas.value ;i++ ){
                 const div = document.createElement("div");
-                div.textContent = "Usted a comprado una entrada en la Platea Alta con valor de Valor: 4000$";
+                div.textContent = "Usted a comprado una entrada en la " + zonas [0] + " con valor de Valor: 4000$";
                 div.classList.add("cartas");
                 div.classList.add("card");  
                 document.body.appendChild(div);
@@ -66,7 +67,7 @@ function calcularEntradas(){
         {
             for (i=1;i <=cantEntradas.value ;i++ ){
                 const div = document.createElement("div");
-                div.textContent = "Usted a comprado una entrada en la Platea Baja con valor de Valor: 5500$";
+                div.textContent = "Usted a comprado una entrada en la " + zonas [1] + " con valor de Valor: 5500$";
                 div.classList.add("card");
                 div.classList.add("cartas"); 
                 document.body.appendChild(div);
@@ -79,7 +80,7 @@ function calcularEntradas(){
         {
             for (i=1;i <=cantEntradas.value ;i++ ){
                 const div = document.createElement("div");
-                div.textContent = "Usted a comprado una entrada en la Popular con valor de Valor: 2000$";
+                div.textContent = "Usted a comprado una entrada en la " + zonas [2] + " con valor de Valor: 2000$";
                 div.classList.add("card");
                 div.classList.add("cartas"); 
                 document.body.appendChild(div);
@@ -92,4 +93,6 @@ function calcularEntradas(){
             alertaZona.classList.remove("oculto");
         }
     }
+    boton.remove();
 }
+
