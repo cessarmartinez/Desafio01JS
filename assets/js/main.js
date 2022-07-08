@@ -88,6 +88,7 @@ option.addEventListener("click", () => {
                 break;
             case "opt4":
                 mostrarEntradas(popular)
+
                 break;
             default:
                 mostrarEntradas(Listproducts)

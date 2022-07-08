@@ -5,17 +5,24 @@ const totalCarrito = JSON.parse(localStorage.getItem("Totalcarrito"));
 const cantidad = JSON.parse(localStorage.getItem('cantidadEntradas'));
 
 function realizarCompra()
-         {alert("Muchas gracias por su compra!")
-     
-                    guardarLocal("listaEntradas", JSON.stringify([]));
-                    guardarLocal("Totalcarrito", JSON.stringify(0));
-                    guardarLocal("cantidadEntradas", JSON.stringify(0));
-                      tbody.innerHTML = ''
-                     
-                  const cantidad2 = JSON.parse(localStorage.getItem('CantidadEntradas'));
-                    if (cantidad2 == null ) {cantidad2=0}
-                    var x = document.getElementById("contador");
-                    x.innerHTML = parseInt(cantidad2);
+         {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Tu compra ha sido confirmada',
+                showConfirmButton: false,
+                timer: 1500
+              })
+            guardarLocal("listaEntradas", JSON.stringify([]));
+            guardarLocal("Totalcarrito", JSON.stringify(0));
+            guardarLocal("cantidadEntradas", JSON.stringify(0));
+            tbody.innerHTML = ''
+            const contenedor = document.getElementById('Totales')
+            contenedor.innerHTML = ''        
+            const cantidad2 = JSON.parse(localStorage.getItem('CantidadEntradas'));
+            if (cantidad2 == null ) {cantidad2=0}
+            var x = document.getElementById("contador");
+            x.innerHTML = parseInt(cantidad2);
         }
 
 function renderCarrito(){
@@ -59,15 +66,12 @@ function armarPagina(){
         totales.textContent = ` El total de la compra es $ ${totalCarrito} `
 
         contenedor.appendChild(totales)
-
         const EfectuarCompra = document.getElementById('EfectuarCompra')
         const Confir = document.createElement('button')
         const Content = `
-                        <a href="..\\index.html">
-                            <button class="btn btn-outline-dark" type=button >
+                        <button class="btn btn-outline-dark" type=button >
                                 Confirmar Compra
-                            </button>
-                        </a> 
+                        </button>
                          `
          Confir.innerHTML = Content;
 
@@ -86,24 +90,49 @@ function armarPagina(){
         vaciarCarrito.addEventListener("click", () => {     BorrarCompra()        })  
 
         EfectuarCompra.appendChild(vaciarCarrito)
+        const Inicio = document.createElement('button')
+        const Content3 = `
+                            <a href="../index.html">
+                            <button class="btn btn-outline-dark" type=button >
+                                Volver al Iniciio
+                            </button>
+                            </a>  
+                         `
+        Inicio.innerHTML = Content3;
+
+        EfectuarCompra.appendChild(Inicio)
 }
 
 function BorrarCompra() 
 {
-                    tbody.innerHTML = ''
-                    const contenedor = document.getElementById('Totales')
-                    contenedor.innerHTML = ''
-                    const EfectuarCompra = document.getElementById('EfectuarCompra')
-                    EfectuarCompra.innerHTML= ''
-                    guardarLocal("listaEntradas", JSON.stringify([]));
-                    guardarLocal("Totalcarrito", JSON.stringify(0));
-                    guardarLocal("cantidadEntradas", JSON.stringify(0));
-                    armarPagina()
+    Swal.fire({
+        title: 'Estas Seguro?',
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText: "No",
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire(
+            'Borrado!',
+          )
+            tbody.innerHTML = ''
+            const contenedor = document.getElementById('Totales')
+            contenedor.innerHTML = ''
+            const EfectuarCompra = document.getElementById('EfectuarCompra')
+            EfectuarCompra.innerHTML= ''
+            guardarLocal("listaEntradas", JSON.stringify([]));
+            guardarLocal("Totalcarrito", JSON.stringify(0));
+            guardarLocal("cantidadEntradas", JSON.stringify(0));
+            armarPagina()
+        }
+      })
 }
 
 function eliminar() {
     const btnEliminar = document.getElementsByClassName("btnEliminar2");
-
     for(let i =0; i < btnEliminar.length ; i++){
             btnEliminar[i].addEventListener("click", () => {
 
@@ -118,8 +147,8 @@ function eliminar() {
                 EfectuarCompra.innerHTML= ''
                 armarPagina()
                 location.reload()
-            })   
-}
+            })  
+    }
 }
 
 armarPagina()
