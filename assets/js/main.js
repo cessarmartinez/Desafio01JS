@@ -167,7 +167,21 @@ function operacion(valor1, valor2, operacion) {
         }
 }
 
+const fetchCotizacion = () => {
+	fetch('https://www.dolarsi.com/api/api.php?type=valoresprincipales').then((response) =>response.json())
+	.then((result)=>{
+        console.log(result)
+	}).catch((err)=>{
 
+		console.error(err)
+	})
+	}
+
+const MostrarCotizacion = (body) =>{
+    console.log(body)
+}
+
+fetchCotizacion()
 const fetchLocalData = () => {
 	fetch('./assets/js/data.json').then((response) =>response.json())
 	.then((product)=>{
