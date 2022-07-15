@@ -166,3 +166,12 @@ function operacion(valor1, valor2, operacion) {
 
         }
 }
+
+
+const fetchLocalData = () => {
+	fetch('./assets/js/data.json').then((response) =>response.json())
+	.then((product)=>{
+        console.log(product)
+	}).catch((err)=>console.log(err))
+	}
+fetchLocalData()

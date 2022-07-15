@@ -1,0 +1,21 @@
+{"product":[
+    {	
+        "code" :"01",
+        "name":"PLATEA ALTA",
+        "price":"1000",
+        "imagen":"./assets/img/alta.png"            
+    },
+    {
+        "code" :"02",
+        "name":"PLATEA BAJA",
+        "price":"5000",
+        "imagen":"./assets/img/baja.png"       
+    },
+    {	
+        "code" :"03",
+        "name":"POPULAR",
+        "price":"5000",
+        "imagen":"./assets/img/popular.png"      
+    }
+
+]}
