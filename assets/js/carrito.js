@@ -1,8 +1,8 @@
 const tbody = document.querySelector('.tbody')
 const guardarLocal = (clave, valor) => { localStorage.setItem(clave, valor) };
-const almacenados = JSON.parse(localStorage.getItem("listaEntradas"));
+const almacenados = JSON.parse(localStorage.getItem("listaProductos"));
 const totalCarrito = JSON.parse(localStorage.getItem("Totalcarrito"));
-const cantidad = JSON.parse(localStorage.getItem('cantidadEntradas'));
+const cantidad = JSON.parse(localStorage.getItem('cantidadProductos'));
 
 function realizarCompra()
          {
@@ -13,13 +13,13 @@ function realizarCompra()
                 showConfirmButton: false,
                 timer: 1500
               })
-            guardarLocal("listaEntradas", JSON.stringify([]));
+            guardarLocal("listaProductos", JSON.stringify([]));
             guardarLocal("Totalcarrito", JSON.stringify(0));
-            guardarLocal("cantidadEntradas", JSON.stringify(0));
+            guardarLocal("cantidadProductos", JSON.stringify(0));
             tbody.innerHTML = ''
             const contenedor = document.getElementById('Totales')
             contenedor.innerHTML = ''        
-            const cantidad2 = JSON.parse(localStorage.getItem('CantidadEntradas'));
+            const cantidad2 = JSON.parse(localStorage.getItem('CantidadProductos'));
             if (cantidad2 == null ) {cantidad2=0}
             var x = document.getElementById("contador");
             x.innerHTML = parseInt(cantidad2);
@@ -31,14 +31,12 @@ function renderCarrito(){
                           const tr = document.createElement('tr')
                           tr.classList.add('ItemCarrito')
                           const Content = `
-                          
-                          <th scope="row"></th>
-                                <td ><p>${item.name}</p></td>
-                                <td class="table__price"><p> $ ${item.precio}      </p>                                </td>
-                                    <div id="divEliminar" class="text-center">
-                                        <button ID = "btnEliminar" class="btnEliminar2 btn btn-outline-dark mt-auto ">X
-                                        </button>
-                                    </div>                          
+                                  </div>
+                                  <td><button ID = "btnEliminar" class="btnEliminar2 btn btn-outline-dark mt-auto ">x</button></td>
+                                    <td><img src="${item.imagen}" alt="${item.descripcion}" height=100 width=100></td>
+                                    <td>${item.name}</td>
+                                    <td>1</td>
+                                    <td>${item.precio}</td>                          
                           `
                
                             tr.innerHTML = Content;
@@ -50,9 +48,9 @@ function renderCarrito(){
 
 function armarPagina(){
 
-        const almacenados = JSON.parse(localStorage.getItem("listaEntradas"));
+        const almacenados = JSON.parse(localStorage.getItem("listaProductos"));
         const totalCarrito = JSON.parse(localStorage.getItem("Totalcarrito"));
-        const cantidad = JSON.parse(localStorage.getItem('cantidadEntradas'));
+        const cantidad = JSON.parse(localStorage.getItem('cantidadProductos'));
 
 
         for (const objeto of almacenados)
@@ -114,20 +112,15 @@ function BorrarCompra()
         cancelButtonColor: '#d33',
         confirmButtonText: 'Si'
       }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire(
-            'Borrado!',
-          )
             tbody.innerHTML = ''
             const contenedor = document.getElementById('Totales')
             contenedor.innerHTML = ''
             const EfectuarCompra = document.getElementById('EfectuarCompra')
             EfectuarCompra.innerHTML= ''
-            guardarLocal("listaEntradas", JSON.stringify([]));
+            guardarLocal("listaProductos", JSON.stringify([]));
             guardarLocal("Totalcarrito", JSON.stringify(0));
-            guardarLocal("cantidadEntradas", JSON.stringify(0));
+            guardarLocal("cantidadProductos", JSON.stringify(0));
             armarPagina()
-        }
       })
 }
 
@@ -138,9 +131,9 @@ function eliminar() {
 
 
                 guardarLocal("Totalcarrito", JSON.stringify(totalCarrito-almacenados[i].precio));
-                guardarLocal("cantidadEntradas", JSON.stringify(cantidad-1));
+                guardarLocal("cantidadProductos", JSON.stringify(cantidad-1));
                 almacenados.splice(i, 1);
-                guardarLocal("listaEntradas", JSON.stringify(almacenados));
+                guardarLocal("listaProductos", JSON.stringify(almacenados));
                 const contenedor = document.getElementById('Totales')
                 contenedor.innerHTML = ''
                 const EfectuarCompra = document.getElementById('EfectuarCompra')

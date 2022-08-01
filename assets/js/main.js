@@ -1,19 +1,20 @@
 let Pedido ='';
+let busqueda=[];
 const Listproducts =[];
-let busqueda=[]
 
 class Product {
- constructor(code,name,precio,imagen) {
+ constructor(code,name,precio,imagen,descripcion) {
         this.code = code;
         this.name = name;
         this.precio = precio;
         this.imagen=imagen;
+        this.descripcion=descripcion;
     }
 }
 
 class carrito {
     constructor() {
-        this.entradas = []
+        this.productos = []
         this.name = ''
         this.total = 0
     }
@@ -22,11 +23,11 @@ class carrito {
     }
    
     addProduct(product) {
-        this.entradas.push(product)
+        this.productos.push(product)
     }
 
     vaciarCarrito() {
-        this.entradas = [];
+        this.productos = [];
     }
 
     getTotal() 
@@ -34,7 +35,7 @@ class carrito {
         Pedido ='';
         let cont=0;
         this.total = 0;
-         for (const A of this.entradas) 
+         for (const A of this.productos) 
             {
             this.total = this.total + A.precio
             }
@@ -44,14 +45,14 @@ class carrito {
 
 const cliente = new carrito();
 
-let cantidad = JSON.parse(localStorage.getItem('cantidadEntradas'));
+let cantidad = JSON.parse(localStorage.getItem('cantidadProductos'));
 if (cantidad ==0 || cantidad == null ) 
                cantidad=0 
 var x = document.getElementById("contador");
 x.innerHTML = parseInt(cantidad);
 
 
-const almacenados = JSON.parse(localStorage.getItem("listaEntradas"));
+const almacenados = JSON.parse(localStorage.getItem("listaProductos"));
 
 const carritoboton = document.getElementById('carrito')
 
@@ -66,39 +67,59 @@ if (almacenados !=null && almacenados.length!=0) {
                     carritoboton.disabled=true
   }
  
-Listproducts.push (new Product('01','PLATEA ALTA',10000,"./assets/img/alta.png" ));
-Listproducts.push (new Product('02','PLATEA BAJA',8500,"./assets/img/baja.png" ));
-Listproducts.push (new Product('03','POPULAR',5000,"./assets/img/popular.png" ));
-  
-const alta = Listproducts.filter((el) => el.code.includes("01"))
-const baja = Listproducts.filter((el) => el.code.includes("02"))
-const popular = Listproducts.filter((el) => el.code.includes("03"))
+
+const fetchLocalData = () => {
+	fetch('./assets/js/data.json').then((response) =>response.json())
+	.then((result)=>{
+        Listaproducts(result.product)
+	}).catch((err)=>console.log(err))
+	}
+const Listaproducts = (body) =>{
+	body.forEach((product) => {
+        Listproducts.push (new Product(  product.code,product.name,product.precio, product.imagen, product.descripcion)  )                
+         nike = Listproducts.filter((el) => el.code.includes('nike'))
+         adidas = Listproducts.filter((el) => el.code.includes('adidas'))
+         balenciaga = Listproducts.filter((el) => el.code.includes('balenciaga'))
+         vans = Listproducts.filter((el) => el.code.includes('vans'))
+         mostrarProductos(Listproducts)
+
+
+	})
+
+
+}
+
+fetchLocalData()
+
+
 const option = document.getElementById("option");
 
 option.addEventListener("click", () => {
      switch (option.value){
             case "opt1":
-                mostrarEntradas(Listproducts)
+                mostrarProductos(Listproducts)
                 break;
             case "opt2":
-                mostrarEntradas(alta)
+                mostrarProductos(nike)
                 break;
             case "opt3":
-                mostrarEntradas(baja)
+                mostrarProductos(adidas)
                 break;
             case "opt4":
-                mostrarEntradas(popular)
-
+                mostrarProductos(vans)
+                break;
+            case "opt5":
+                mostrarProductos(balenciaga)
                 break;
             default:
-                mostrarEntradas(Listproducts)
+                mostrarProductos(Listproducts)
                 break;
         }
     })   
 
-mostrarEntradas(Listproducts)
+mostrarProductos(Listproducts)
 
-function mostrarEntradas (array) {
+function mostrarProductos (array) {
 let lista = document.getElementById('lista')
 
 lista.innerHTML = ''
@@ -107,7 +128,7 @@ lista.innerHTML = ''
                         tr.classList.add('col', 'mb-5')
                        const Content = `
                             <div class="card h-100">
-                                <img class="card-img-top" src=${product.imagen} alt="..." />
+                                <img class="card-img-top" src=${product.imagen} alt="${product.descripcion}" />
                                 <div class="card-body p-4">
                                     <div class="text-center">
                                         <h5 class="fw-bolder">${product.name}</h5>
@@ -131,11 +152,11 @@ lista.innerHTML = ''
 }
 const guardarLocal = (clave, valor) => { localStorage.setItem(clave, valor) };
 
-function agregarCarrito(entradas) {
+function agregarCarrito(productos) {
 
-    cliente.addProduct(entradas) ;  
+    cliente.addProduct(productos) ;  
 
-    guardarLocal("listaEntradas", JSON.stringify(cliente.entradas));
+    guardarLocal("listaProductos", JSON.stringify(cliente.productos));
     guardarLocal("Totalcarrito", JSON.stringify(cliente.getTotal()));
 
     carritoboton.disabled=false
@@ -143,7 +164,14 @@ function agregarCarrito(entradas) {
     
     var x = document.getElementById("contador");
     x.innerHTML = parseInt(x.innerHTML)+1;
-    localStorage.setItem("cantidadEntradas",JSON.stringify(parseInt(x.innerHTML)))
+    localStorage.setItem("cantidadProductos",JSON.stringify(parseInt(x.innerHTML)))
+    Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'El Producto ha sido agregado',
+        showConfirmButton: false,
+        timer: 1500
+      })
 }
 
 function operacion(valor1, valor2, operacion) {
@@ -166,26 +194,3 @@ function operacion(valor1, valor2, operacion) {
 
         }
 }
-
-const fetchCotizacion = () => {
-	fetch('https://www.dolarsi.com/api/api.php?type=valoresprincipales').then((response) =>response.json())
-	.then((result)=>{
-        console.log(result)
-	}).catch((err)=>{
-
-		console.error(err)
-	})
-	}
-
-const MostrarCotizacion = (body) =>{
-    console.log(body)
-}
-
-fetchCotizacion()
-const fetchLocalData = () => {
-	fetch('./assets/js/data.json').then((response) =>response.json())
-	.then((product)=>{
-        console.log(product)
-	}).catch((err)=>console.log(err))
-	}
-fetchLocalData()
